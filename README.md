@@ -11,6 +11,11 @@ This project is a prototype for the Superjoin Engineering Intern Hiring Assignme
     -   **Phase 2 (Reasoning):** Gemini 3.6 Flash compares all extracted facts to identify relationships, explicitly looking for corroborations, genuine contradictions, and apparent contradictions reconciled by context.
 -   **Storage:** Facts and relationships are stored in-memory during the session and rendered dynamically, avoiding the need for a complex graph database setup for this prototype.
 
+### Important Decisions & Trade-offs
+-   **In-Memory Storage vs. Persistent DB:** For this prototype, all facts and relationship graphs are stored in `st.session_state` (in-memory) rather than a persistent vector or graph database. This drastically simplifies the setup and running process but limits the system to session-scoped memory.
+-   **Truncated Payload vs. Map-Reduce Extraction:** To bypass sequential API bottlenecks and ensure blazing-fast response times for the demo, the pipeline dynamically truncates massive documents and utilizes Python's `ThreadPoolExecutor`. This trades comprehensive, full-document extraction for raw speed and responsiveness.
+-   **Strict Pydantic Schema vs. Free-form JSON:** Enforcing a strict schema guarantees that `source_quote`, `metric`, and `value` are reliably parsed for the UI. The trade-off is that the LLM may occasionally drop complex nuanced facts that don't perfectly fit the rigid structure.
+
 ## Setup and Run Instructions
 
 1.  **Prerequisites:** Python 3.9+ installed.
