@@ -34,7 +34,7 @@ This project is a prototype for the Superjoin Engineering Intern Hiring Assignme
     ```
 
 ## Video Demo
-[Insert Link to your 3-minute Loom/YouTube video here]
+[Watch the 3-minute Video Demo Here](https://drive.google.com/drive/folders/1EN3kvDUhvubFF9PB6XPIxsNQkIwZ1Jx5?usp=sharing)
 
 ## Limitations and Next Steps
 
