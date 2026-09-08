@@ -32,7 +32,7 @@ def extract_facts(text: str, document_name: str, api_key: str) -> list[dict]:
     You are an expert financial and macroeconomic analyst. 
     Read the following text extracted from a document named '{document_name}'.
     
-    Extract the 15 most important numerical and semantic facts from this text. 
+    Extract the 8 most important numerical and semantic facts from this text. 
     Focus on key metrics like revenue, growth rates, major events, or key figures.
     Make sure to provide a unique 'id' for each fact (e.g., '{document_name}_fact_1').
     Dynamically assign a logical 'category' to each fact to create an evolving schema.
@@ -40,7 +40,7 @@ def extract_facts(text: str, document_name: str, api_key: str) -> list[dict]:
     
     Document Text:
     ---
-    {text[:80000]} # Limit characters to avoid timeouts for massive docs
+    {text[:15000]} # Drastically reduced chunk size for extremely fast demo processing
     ---
     """
     

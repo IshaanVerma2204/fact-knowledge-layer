@@ -46,3 +46,5 @@ This project is a prototype for the Superjoin Engineering Intern Hiring Assignme
 
 -   **Incremental Knowledge Base:** The application supports incremental ingestion. You can process one document, and later upload another. The engine will only parse the new document and will update its knowledge graph and reasoning dynamically.
 -   **Dynamic Schema:** The AI automatically categorizes each extracted fact on the fly, creating an evolving schema without hard-coded rules.
+-   **High-Speed Concurrent Processing:** The pipeline utilizes Python's `ThreadPoolExecutor` to process multiple large PDFs concurrently, bypassing sequential API bottlenecks.
+-   **Payload Optimization:** Extraction prompts are optimized to sample the most fact-dense sections of massive prospectuses, guaranteeing blazing-fast response times for the demo.

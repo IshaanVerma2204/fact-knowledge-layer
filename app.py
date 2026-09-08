@@ -920,22 +920,26 @@ with tab_ingest:
 
                 render_pipeline(0)
 
-                for i, file in enumerate(new_files):
-                    render_pipeline(0)
-                    show_loader(f"Parsing <strong>{file.name}</strong>")
-                    show_progress(i, n)
-                    text = extract_text_from_pdf(file.read())
+                import concurrent.futures
+                def process_file(file_obj):
+                    text = extract_text_from_pdf(file_obj.read())
+                    extracted = extract_facts(text, file_obj.name, api_key)
+                    return file_obj.name, extracted
 
-                    render_pipeline(1)
-                    show_loader(
-                        f"Extracting facts from <strong>{file.name}</strong> "
-                        f"<span style='color:var(--text-dim);font-size:.8rem;'>"
-                        f"via Gemini 2.5 Flash</span>"
-                    )
-                    new_facts = extract_facts(text, file.name, api_key)
-                    st.session_state.facts.extend(new_facts)
-                    st.session_state.processed_files.add(file.name)
-                    show_progress(i + 1, n)
+                with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                    futures = {executor.submit(process_file, f): f for f in new_files}
+                    
+                    for i, future in enumerate(concurrent.futures.as_completed(futures)):
+                        render_pipeline(1)
+                        file_name, new_facts = future.result()
+                        show_loader(
+                            f"Extracting facts from <strong>{file_name}</strong> "
+                            f"<span style='color:var(--text-dim);font-size:.8rem;'>"
+                            f"via Gemini 2.5 Flash</span>"
+                        )
+                        st.session_state.facts.extend(new_facts)
+                        st.session_state.processed_files.add(file_name)
+                        show_progress(i + 1, n)
 
                 if len(st.session_state.processed_files) >= 2:
                     render_pipeline(2)
